@@ -24,8 +24,10 @@ postgres=# grant all privileges on database your-database to your-username;
 ### Contents of .env file
 
 ```
-export DATABASE_URL="dbname='your-database' host='localhost' port='5432' user='your-username' password='your-password'"
-export DATABASE_URL_TEST="dbname='your-test-database' host='localhost' port='5432' user='your-username' password='your-password'"
+DATABASE_URL="postgres://username:password@localhost:5432/database"
+NODE_ENV="development"
+PORT=8001
+SECRET_KEY="your-secret-key"
 
 ```
 ## Running the app
@@ -60,22 +62,30 @@ versioning for the endpoints
 
 ## API Documentation
 ```json
-GET http://127.0.0.1:8000/api/todos/
+POST http://127.0.0.1:8001/auth/signup
 
-POST http://127.0.0.1:8000/api/todos/
+POST http://127.0.0.1:8001/auth/login
 
-GET http://127.0.0.1:8000/api/todos/<id>
+GET http://127.0.0.1:8001/api/todos/
 
-PUT http://127.0.0.1:8000/api/todos/<id>
+POST http://127.0.0.1:8001/api/todos/
 
-DELETE GET http://127.0.0.1:8000/api/todos/<id>
+GET http://127.0.0.1:8001/api/todos/<id>
 
-POST http://127.0.0.1:8000/api/todos/<id>
+PUT http://127.0.0.1:8001/api/todos/<id>
 
-PUT http://127.0.0.1:8000/api/todos/<id>/items/<todoItemId>
+DELETE GET http://127.0.0.1:8001/api/todos/<id>
 
-DELETE http://127.0.0.1:8000/api/todos/<id>/items/<todoItemId>
+POST http://127.0.0.1:8001/api/todos/<id>
+
+PUT http://127.0.0.1:8001/api/todos/<id>/items/<todoItemId>
+
+DELETE http://127.0.0.1:8001/api/todos/<id>/items/<todoItemId>
 ```
+
+### Notes
+
+All routes apart from /login and /signuprequire Authorization using a Bearer Token
 
 ## Author
 

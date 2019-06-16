@@ -16,8 +16,8 @@ module.exports = (app, passport) => {
   app.put('/api/todos/:todoId/items/:todoItemId', passport.authenticate('jwt', { session: false }), todoItemsController.update);
   app.delete('/api/todos/:todoId/items/:todoItemId', passport.authenticate('jwt', { session: false }), todoItemsController.destroy);
   
-  app.post('/signup', usersController.create);
-  app.post('/login', usersController.login);
+  app.post('/auth/signup', usersController.create);
+  app.post('/auth/login', usersController.login);
 
   // For any other request method on todo items ,we're going to return "Method Not Allowed"
   app.all('/api/todos/:todoId/items', (req, res) =>
