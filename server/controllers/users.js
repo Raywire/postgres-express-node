@@ -28,10 +28,7 @@ module.exports = {
       user.comparePassword(req.body.password, (err, isMatch) => {
         if (isMatch && !err) {
           const token = jwt.sign(JSON.parse(JSON.stringify({userId: user.id, username: user.username})), secretKey, {expiresIn: 86400 * 30});
-          jwt.verify(token, secretKey, function(err, data){
-            console.log(err, data);
-          })
-          res.json({success: true, token: token});
+          res.json({success: true, token: token, user: { id: user.id, username: user.username }});
         } else {
           res.status(401).send({success: false, message: 'Authentication failed. Wrong password'});
         }

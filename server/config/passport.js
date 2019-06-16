@@ -12,14 +12,19 @@ jwtOptions.secretOrKey = process.env.SECRET_KEY;
 module.exports = function(passport) {
 
   let strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
-    console.log('payload received', jwt_payload);
-    User.findOne({
+    let user = getUser(jwt_payload.username);
+    if (user) {
+      next(null, user)
+    } else {
+      next(null, false)
+    }
+  });
+  const getUser = async username => {
+    return await User.findOne({
       where: {
-        username: jwt_payload.username
+        username: username
       }
     })
-    .then((user) => { return next(null, user); })
-    .catch((error) => { return next(error, false); })
-  });
+  }
   passport.use(strategy);
 }
