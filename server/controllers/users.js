@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models').User;
 
+const secretKey = process.env.SECRET_KEY;
+
 module.exports = {
   create(req, res) {
     return User.create({
@@ -25,8 +27,8 @@ module.exports = {
       }
       user.comparePassword(req.body.password, (err, isMatch) => {
         if (isMatch && !err) {
-          const token = jwt.sign(JSON.parse(JSON.stringify({username: user.username})), 'nodeauthsecret', {expiresIn: 86400 * 30});
-          jwt.verify(token, 'nodeauthsecret', function(err, data){
+          const token = jwt.sign(JSON.parse(JSON.stringify({userId: user.id, username: user.username})), secretKey, {expiresIn: 86400 * 30});
+          jwt.verify(token, secretKey, function(err, data){
             console.log(err, data);
           })
           res.json({success: true, token: token});
