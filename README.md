@@ -1,3 +1,5 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/af62aca2e06bd8f4da6f/maintainability)](https://codeclimate.com/github/Raywire/postgres-express-node/maintainability)
+
 # postgres-express-node
 Todo list backend API using express
 
@@ -37,7 +39,7 @@ npm install
 Run the migrations
 
 ```node
-sequalize db:migrate
+sequelize db:migrate
 ```
 Start server in development mode
 
