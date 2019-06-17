@@ -9,8 +9,8 @@ module.exports = {
       username: req.body.username,
       password: req.body.password,
     })
-    .then(user => res.status(201).send(user))
-    .catch(error => res.status(400).send(console.log(error)));
+    .then(user => res.status(201).send({ user: { id: user.id, username: user.username, createdAt: user.createdAt } }))
+    .catch(error => res.status(400).send(error));
   },
   login(req, res) {
     return User.findOne({
