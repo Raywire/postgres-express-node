@@ -5,12 +5,16 @@ module.exports = {
   create(req, res) {
     return Todo.create({
       title: req.body.title,
+      UserId: req.user.id,
     })
     .then(todo => res.status(201).send(todo))
     .catch(error => res.status(400).send(error));
   },
   list(req, res) {
     return Todo.findAll({
+      where: {
+        UserId: req.user.id
+      },
       include: [
         {
           model: TodoItem,
@@ -42,6 +46,9 @@ module.exports = {
           message: 'Todo Not Found',
         });
       }
+      if(todo.UserId !== req.user.id){
+        return res.status(403).send({ message: 'You can only view your own todos' });
+      }
       return res.status(200).send(todo);
     })
     .catch(error => res.status(400).send(error));
@@ -53,6 +60,9 @@ module.exports = {
         return res.status(404).send({
           message: 'Todo Not Found',
         });
+      }
+      if(todo.UserId !== req.user.id){
+        return res.status(403).send({ message: 'You can only update your own todos' });
       }
       return todo.update({
         title: req.body.title || todo.title,
@@ -69,6 +79,9 @@ module.exports = {
         return res.status(404).send({
           message: 'Todo Not Found',
         });
+      }
+      if(todo.UserId !== req.user.id){
+        return res.status(403).send({ message: 'You can only delete your own todos' });
       }
       return todo.destroy()
       .then(() => res.status(200).send({

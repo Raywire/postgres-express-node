@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'todoId',
       as: 'todoItems',
     });
+    Todo.belongsTo(models.User, {
+      foreginKey: 'UserId',
+      onDelete: 'CASCADE',
+    });
   };
   return Todo;
 };

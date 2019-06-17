@@ -11,8 +11,8 @@ jwtOptions.secretOrKey = process.env.SECRET_KEY;
 // Strategey for web token
 module.exports = function(passport) {
 
-  let strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
-    let user = getUser(jwt_payload.username);
+  let strategy = new JwtStrategy(jwtOptions, async (jwt_payload, next) => {
+    let user = await getUser(jwt_payload.username);
     if (user) {
       next(null, user)
     } else {
@@ -21,6 +21,7 @@ module.exports = function(passport) {
   });
   const getUser = async username => {
     return await User.findOne({
+      attributes: ['id', 'username', 'createdAt', 'updatedAt'],
       where: {
         username: username
       }
