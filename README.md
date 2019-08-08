@@ -54,6 +54,7 @@ npm run start:dev
 *   [Express](https://expressjs.com/) - Express
 *   [NodeJS](https://nodejs.org/) - NodeJS
 *   [PostgreSQL](https://postgresql.org/docs/) - PostgreSQL
+*   [Passport](http://passportjs.org) - Passport
 
 ## API Endpoints
 
@@ -61,6 +62,8 @@ versioning for the endpoints
 /api/
 
 ## API Documentation
+[Postman API Documentation](https://documenter.getpostman.com/view/6831940/SVYtNdfm)
+
 ```json
 POST http://127.0.0.1:8001/auth/signup
 
@@ -82,6 +85,9 @@ PUT http://127.0.0.1:8001/api/todos/<id>/items/<todoItemId>
 
 DELETE http://127.0.0.1:8001/api/todos/<id>/items/<todoItemId>
 ```
+
+### Hosted on Heroku
+[Heroku Link](https://todos-node-app.herokuapp.com/)
 
 ### Notes
 

@@ -30,6 +30,7 @@ require('./server/config/passport')(passport);
 // Setup a default catch-all route that sends back a welcome message in JSON format
 app.get('*', (req, res) => res.status(200).send({
     message: 'Welcome to the beginning of insanity',
+    api_docs: 'https://documenter.getpostman.com/view/6831940/SVYtNdfm'
 }));
 
 module.exports = app;
