@@ -5,12 +5,29 @@ const secretKey = process.env.SECRET_KEY;
 
 module.exports = {
   signup(req, res) {
-    return User.create({
-      username: req.body.username,
-      password: req.body.password,
+    return User.findOne({
+      attributes: ['username'],
+      where: {
+        username: req.body.username
+      }
     })
-    .then(user => res.status(201).send({ user: { id: user.id, username: user.username, createdAt: user.createdAt } }))
-    .catch(error => res.status(400).send(error));
+    .then((user) => {
+      if (user) {
+        return res.status(400).send({
+          success: false,
+          message: 'Email address already exists'
+        })
+      }
+      return User.create({
+        username: req.body.username,
+        password: req.body.password,
+      })
+      .then(user => res.status(201).send({ 
+        success: true,
+        user: { id: user.id, username: user.username, createdAt: user.createdAt }
+      }))
+      .catch(error => res.status(400).send(error));
+    })
   },
   login(req, res) {
     return User.findOne({

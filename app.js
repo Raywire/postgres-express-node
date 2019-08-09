@@ -4,6 +4,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 require('dotenv').config();
+const joiErrors = require('./middlewares/joiErrors')
 
 // Require our routes and passport into the application
 const todosRouter = require('./server/routes').todosRouter();
@@ -29,7 +30,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', passport.authenticate('jwt', { session: false }), todosRouter);
 app.use(userRouter);
 
-// Setup a default catch-all route that sends back a welcome message in JSON format
+app.use(joiErrors());
+
 app.use('/', (req, res) => res.status(200).send({
     message: 'Welcome to the beginning of insanity',
     api_docs: 'https://documenter.getpostman.com/view/6831940/SVYtNdfm'
