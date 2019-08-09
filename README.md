@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Raywire/postgres-express-node.svg?branch=develop)](https://travis-ci.org/Raywire/postgres-express-node)
+[![Coverage Status](https://coveralls.io/repos/github/Raywire/postgres-express-node/badge.svg?branch=develop)](https://coveralls.io/github/Raywire/postgres-express-node?branch=develop)
 [![Maintainability](https://api.codeclimate.com/v1/badges/af62aca2e06bd8f4da6f/maintainability)](https://codeclimate.com/github/Raywire/postgres-express-node/maintainability)
 
 # postgres-express-node
@@ -25,6 +27,7 @@ postgres=# grant all privileges on database your-database to your-username;
 
 ```
 DATABASE_URL="postgres://username:password@localhost:5432/database"
+DATABASE_URL_TEST="postgres://username:password@localhost:5432/database_test"
 NODE_ENV="development"
 PORT=8001
 SECRET_KEY="your-secret-key"
