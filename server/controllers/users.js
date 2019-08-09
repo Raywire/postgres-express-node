@@ -4,7 +4,7 @@ const User = require('../models').User;
 const secretKey = process.env.SECRET_KEY;
 
 module.exports = {
-  create(req, res) {
+  signup(req, res) {
     return User.create({
       username: req.body.username,
       password: req.body.password,

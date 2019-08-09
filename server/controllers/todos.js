@@ -2,7 +2,7 @@ const Todo = require('../models').Todo;
 const TodoItem = require('../models').TodoItem;
 
 module.exports = {
-  create(req, res) {
+  createTodo(req, res) {
     return Todo.create({
       title: req.body.title,
       UserId: req.user.id,
