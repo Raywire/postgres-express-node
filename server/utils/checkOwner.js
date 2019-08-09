@@ -24,6 +24,5 @@ module.exports = {
       req.todo = todo;
       return next();
     })
-    .catch(error => res.status(400).send(error));
   }
 };

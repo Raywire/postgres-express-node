@@ -9,7 +9,7 @@ function userRoutes() {
   userRouter.route('/auth/signup')
     .post(celebrate({ body: validator.validateUser }), usersController.signup);
   userRouter.route('/auth/login')
-    .post(usersController.login);
+    .post(celebrate({ body: validator.validateLogin }), usersController.login);
 
   return userRouter;
 }

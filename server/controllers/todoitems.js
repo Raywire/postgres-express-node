@@ -7,7 +7,6 @@ module.exports = {
       todoId: req.params.todoId,
     })
     .then(todoItem => res.status(201).send(todoItem))
-    .catch(error => res.status(400).send(error));
   },
   update(req, res) {
     return TodoItem.findOne({
@@ -28,9 +27,7 @@ module.exports = {
         complete: req.body.complete || todoItem.complete,
       })
       .then(updatedTodoItem => res.status(200).send(updatedTodoItem))
-      .catch(error => res.status(400).send(error));
     })
-    .catch(error => res.status(400).send(error));
   },
   destroy(req, res) {
     return TodoItem.findOne({
@@ -47,11 +44,7 @@ module.exports = {
         });
       }
       return todoItem.destroy()
-      .then(updatedTodoItem => res.status(200).send({
-        message: 'TodoItem deleted successfully'
-      }))
-      .catch(error => res.status(400).send(error));
+      .then(updatedTodoItem => res.sendStatus(204))
     })
-    .catch(error => res.status(400).send(error));
   },
 };

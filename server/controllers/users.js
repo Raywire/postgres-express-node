@@ -26,7 +26,6 @@ module.exports = {
         success: true,
         user: { id: user.id, username: user.username, createdAt: user.createdAt }
       }))
-      .catch(error => res.status(400).send(error));
     })
   },
   login(req, res) {
@@ -39,6 +38,7 @@ module.exports = {
     .then((user) => {
       if (!user) {
         return res.status(401).send({
+          success: false,
           message: 'Authentication failed. User not found',
         });
       }
@@ -51,6 +51,5 @@ module.exports = {
         }
       })
     })
-    .catch((error) => res.status(400).send(error));
   },
 };

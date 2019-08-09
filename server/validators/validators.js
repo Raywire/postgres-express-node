@@ -14,8 +14,14 @@ const validateUser = Joi.object().keys({
   password: Joi.string().min(7).alphanum().required()
 })
 
+const validateLogin = Joi.object().keys({
+  username: Joi.string().email().required(),
+  password: Joi.string().required()
+})
+
 module.exports = {
   validateTodo,
   validateTodoItem,
-  validateUser
+  validateUser,
+  validateLogin
 }
