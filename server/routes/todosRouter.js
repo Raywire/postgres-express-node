@@ -3,12 +3,14 @@ const { celebrate } = require('celebrate');
 const todosController = require('../controllers').todos;
 const todoItemsController = require('../controllers').todoItems;
 const validator = require('../validators/validators');
+const checkOwner = require('../utils/checkOwner');
 
 function todosRoutes() {
   const todosRouter = express.Router();
   todosRouter.route('/todos')
     .post(celebrate({ body: validator.validateTodo }), todosController.createTodo)
     .get(todosController.list);
+  todosRouter.use('/todos/:todoId', checkOwner.findTodo);
   todosRouter.route('/todos/:todoId')
     .get(todosController.retrieve)
     .put(celebrate({ body: validator.validateTodo }), todosController.update)
