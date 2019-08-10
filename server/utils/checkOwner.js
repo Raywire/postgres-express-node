@@ -1,5 +1,5 @@
-const Todo = require('../models').Todo;
-const TodoItem = require('../models').TodoItem;
+const { Todo } = require('../models');
+const { TodoItem } = require('../models');
 
 module.exports = {
   findTodo(req, res, next) {
@@ -8,21 +8,21 @@ module.exports = {
         {
           model: TodoItem,
           attributes: ['id', 'complete', 'content', 'todoId', 'createdAt', 'updatedAt'],
-          as: 'todoItems'
+          as: 'todoItems',
+        },
+      ],
+    })
+      .then((todo) => {
+        if (!todo) {
+          return res.status(404).send({
+            message: 'Todo Not Found',
+          });
         }
-      ]
-    })
-    .then(todo => {
-      if(!todo) {
-        return res.status(404).send({
-          message: 'Todo Not Found',
-        });
-      }
-      if(todo.UserId !== req.user.id){
-        return res.status(403).send({ message: 'Forbidden, only the owner can perform this action' });
-      }
-      req.todo = todo;
-      return next();
-    })
-  }
+        if (todo.UserId !== req.user.id) {
+          return res.status(403).send({ message: 'Forbidden, only the owner can perform this action' });
+        }
+        req.todo = todo;
+        return next();
+      });
+  },
 };

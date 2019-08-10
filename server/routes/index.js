@@ -4,5 +4,5 @@ const userRouter = require('./userRouter');
 
 module.exports = {
   todosRouter,
-  userRouter
+  userRouter,
 };

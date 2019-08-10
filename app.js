@@ -4,7 +4,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 require('dotenv').config();
-const joiErrors = require('./middlewares/joiErrors')
+const joiErrors = require('./middlewares/joiErrors');
 
 // Require our routes and passport into the application
 const todosRouter = require('./server/routes').todosRouter();
@@ -33,11 +33,11 @@ app.use(userRouter);
 app.use(joiErrors());
 
 app.use('/', (req, res) => res.status(200).send({
-    message: 'Welcome to the beginning of insanity',
-    api_docs: 'https://documenter.getpostman.com/view/6831940/SVYtNdfm'
+  message: 'Welcome to the beginning of insanity',
+  api_docs: 'https://documenter.getpostman.com/view/6831940/SVYtNdfm',
 }));
 
 // Return 404 for nonexistent routes
-app.use((req, res) => res.status(404).send({ message: 'Route not found' }))
+app.use((req, res) => res.status(404).send({ message: 'Route not found' }));
 
 module.exports = app;

@@ -16,16 +16,16 @@ function todosRoutes() {
     .put(celebrate({ body: validator.validateTodo }), todosController.update)
     .delete(todosController.destroy);
   todosRouter.route('/todos/:todoId/items')
-    .post(celebrate({ body: validator.validateTodoItem }), todoItemsController.createTodoItem)
+    .post(celebrate({ body: validator.validateTodoItem }), todoItemsController.createTodoItem);
   todosRouter.route('/todos/:todoId/items/:todoItemId')
     .put(celebrate({ body: validator.validateTodoItem }), todoItemsController.update)
     .delete(todoItemsController.destroy);
   todosRouter.route('*')
-    .all((req,res) => {
+    .all((req, res) => {
       res.status(405).send({
         message: 'Method Not Allowed',
-      })
-    })
+      });
+    });
 
   return todosRouter;
 }

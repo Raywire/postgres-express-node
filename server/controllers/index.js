@@ -3,7 +3,7 @@ const todoItems = require('./todoitems');
 const users = require('./users');
 
 module.exports = {
-    todos,
-    todoItems,
-    users,
+  todos,
+  todoItems,
+  users,
 };

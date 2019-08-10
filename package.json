@@ -10,7 +10,8 @@
     "migrate": "sequelize db:migrate",
     "reset:db": "sequelize db:migrate:undo:all && npm run migrate",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "postinstall": "sequelize db:migrate"
+    "postinstall": "sequelize db:migrate",
+    "lint": "eslint"
   },
   "nyc": {
     "extension": [
@@ -22,7 +23,8 @@
       "coverage",
       "dist",
       "server/tests",
-      "server/migrations"
+      "server/migrations",
+      ".eslintrc.js"
     ],
     "reporter": [
       "html",
@@ -53,6 +55,9 @@
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "coveralls": "^3.0.6",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
     "mocha": "^6.2.0",
     "nodemon": "^1.19.1",
     "nyc": "^14.1.1",

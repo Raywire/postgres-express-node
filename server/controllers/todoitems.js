@@ -1,4 +1,4 @@
-const TodoItem = require('../models').TodoItem;
+const { TodoItem } = require('../models');
 
 module.exports = {
   createTodoItem(req, res) {
@@ -6,7 +6,7 @@ module.exports = {
       content: req.body.content,
       todoId: req.params.todoId,
     })
-    .then(todoItem => res.status(201).send(todoItem))
+      .then((todoItem) => res.status(201).send(todoItem));
   },
   update(req, res) {
     return TodoItem.findOne({
@@ -16,18 +16,18 @@ module.exports = {
         todoId: req.params.todoId,
       },
     })
-    .then(todoItem => {
-      if(!todoItem) {
-        return res.status(404).send({
-          message:'TodoItem Not Found',
-        });
-      }
-      return todoItem.update({
-        content: req.body.content || todoItem.content,
-        complete: req.body.complete || todoItem.complete,
-      })
-      .then(updatedTodoItem => res.status(200).send(updatedTodoItem))
-    })
+      .then((todoItem) => {
+        if (!todoItem) {
+          return res.status(404).send({
+            message: 'TodoItem Not Found',
+          });
+        }
+        return todoItem.update({
+          content: req.body.content || todoItem.content,
+          complete: req.body.complete || todoItem.complete,
+        })
+          .then((updatedTodoItem) => res.status(200).send(updatedTodoItem));
+      });
   },
   destroy(req, res) {
     return TodoItem.findOne({
@@ -37,14 +37,14 @@ module.exports = {
         todoId: req.params.todoId,
       },
     })
-    .then(todoItem => {
-      if(!todoItem) {
-        return res.status(404).send({
-          message:'TodoItem Not Found',
-        });
-      }
-      return todoItem.destroy()
-      .then(updatedTodoItem => res.sendStatus(204))
-    })
+      .then((todoItem) => {
+        if (!todoItem) {
+          return res.status(404).send({
+            message: 'TodoItem Not Found',
+          });
+        }
+        return todoItem.destroy()
+          .then(() => res.sendStatus(204));
+      });
   },
 };

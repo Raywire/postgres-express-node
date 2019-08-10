@@ -1,31 +1,28 @@
 const passportJWT = require('passport-jwt');
-const User = require('../models').User;
+const { User } = require('../models');
 
-let ExtractJwt = passportJWT.ExtractJwt;
-let JwtStrategy = passportJWT.Strategy;
+const { ExtractJwt } = passportJWT;
+const JwtStrategy = passportJWT.Strategy;
 
-let jwtOptions = {};
+const jwtOptions = {};
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 jwtOptions.secretOrKey = process.env.SECRET_KEY;
 
 // Strategey for web token
-module.exports = function(passport) {
-
-  let strategy = new JwtStrategy(jwtOptions, async (jwt_payload, next) => {
-    let user = await getUser(jwt_payload.username);
+module.exports = function (passport) {
+  const strategy = new JwtStrategy(jwtOptions, async (jwt_payload, next) => {
+    const user = await getUser(jwt_payload.username);
     if (user) {
-      next(null, user)
+      next(null, user);
     } else {
-      next(null, false)
+      next(null, false);
     }
   });
-  const getUser = async username => {
-    return await User.findOne({
-      attributes: ['id', 'username', 'createdAt', 'updatedAt'],
-      where: {
-        username: username
-      }
-    })
-  }
+  const getUser = async (username) => await User.findOne({
+    attributes: ['id', 'username', 'createdAt', 'updatedAt'],
+    where: {
+      username,
+    },
+  });
   passport.use(strategy);
-}
+};
