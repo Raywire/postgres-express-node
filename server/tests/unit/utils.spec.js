@@ -4,29 +4,24 @@ const { expect } = chai;
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 const { mockReq, mockRes } = require('sinon-express-mock');
-const checkOwner = require('../utils/checkOwner');
-const { Todo } = require('../models');
-const { TodoItem } = require('../models');
-const { User } = require('../models');
+const checkOwner = require('../../utils/checkOwner');
+const { Todo } = require('../../models');
+const { TodoItem } = require('../../models');
+const { deleteTestUser } = require('../utils');
+const { User } = require('../../models');
 
-process.env.NODE_ENV = 'test';
 chai.use(sinonChai);
 
-before(async () => {
-  user = await User.create({ username: 'testuser4@test.com', password: '1234567' });
-  todo = await Todo.create({ title: 'Watch Jessica Jones', UserId: user.id });
-  todoItem = await TodoItem.create({ content: 'Watch Season 1', todoId: todo.id });
-});
-
-after(async () => {
-  await User.findByPk(user.id).then(((user) => {
-    if (user) {
-      user.destroy();
-    }
-  }));
-});
-
 describe('utils', () => {
+  before(async () => {
+    user = await User.create({ username: 'testuser4@test.com', password: '1234567' });
+    todo = await Todo.create({ title: 'Watch Jessica Jones', UserId: user.id });
+    todoItem = await TodoItem.create({ content: 'Watch Season 1', todoId: todo.id });
+  });
+
+  after(async () => {
+    await deleteTestUser('testuser4@test.com');
+  });
   describe('checkOwner', () => {
     it('should return call next if todo is found', (done) => {
       const request = {

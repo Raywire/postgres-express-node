@@ -3,12 +3,16 @@ const chai = require('chai');
 const { expect } = chai;
 const sinonChai = require('sinon-chai');
 const { mockReq, mockRes } = require('sinon-express-mock');
-const usersController = require('../controllers/users');
+const usersController = require('../../controllers/users');
+const { deleteTestUser } = require('../utils');
 
-process.env.NODE_ENV = 'test';
 chai.use(sinonChai);
 
 describe('user.controller', () => {
+  after(async () => {
+    await deleteTestUser('testuser3@test.com');
+  });
+
   describe('signup', () => {
     it('should return the created user', (done) => {
       const request = {

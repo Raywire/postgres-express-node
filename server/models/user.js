@@ -1,32 +1,36 @@
 const bcrypt = require('bcrypt');
-'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-    }
+    },
   });
-  User.beforeSave((user, options) =>{
+
+  User.beforeSave((user) => {
     if (user.changed('password')) {
       user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
     }
   });
-  User.prototype.comparePassword = function (passw, cb) {
-    bcrypt.compare(passw, this.password, function(err, isMatch){
-      if(err) {
+
+  function comparePassword(passw, cb) {
+    bcrypt.compare(passw, this.password, (err, isMatch) => {
+      if (err) {
         return cb(err);
       }
-      cb(null, isMatch);
+      return cb(null, isMatch);
     });
-  };
-  User.associate = function(models) {
-    // associations can be defined here
+  }
+
+  User.prototype.comparePassword = comparePassword;
+
+  User.associate = (models) => {
     User.hasMany(models.Todo);
   };
   return User;

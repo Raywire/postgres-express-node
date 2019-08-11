@@ -3,6 +3,8 @@ module.exports = {
     browser: true,
     commonjs: true,
     es6: true,
+    node: true,
+    mocha: true,
   },
   extends: [
     'airbnb-base',
@@ -15,6 +17,8 @@ module.exports = {
     ecmaVersion: 2018,
   },
   rules: {
-  },
-  "env": { "node": true, "mocha": true }
+    "no-param-reassign": ["error", { 
+      "props": true,
+      "ignorePropertyModificationsFor": ["user", "req"] }]
+  }
 };

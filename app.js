@@ -4,12 +4,14 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 require('dotenv').config();
-const joiErrors = require('./middlewares/joiErrors');
+const joiErrors = require('./server/middlewares/joiErrors');
 
 // Require our routes and passport into the application
 const todosRouter = require('./server/routes').todosRouter();
 const userRouter = require('./server/routes').userRouter();
-require('./server/config/passport')(passport);
+const { passportAuth } = require('./server/config/passport');
+
+passportAuth(passport);
 
 // Set up the express app
 const app = express();
@@ -30,9 +32,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', passport.authenticate('jwt', { session: false }), todosRouter);
 app.use(userRouter);
 
-app.use(joiErrors());
+app.use(joiErrors);
 
-app.use('/', (req, res) => res.status(200).send({
+app.get('/', (req, res) => res.status(200).send({
   message: 'Welcome to the beginning of insanity',
   api_docs: 'https://documenter.getpostman.com/view/6831940/SVYtNdfm',
 }));

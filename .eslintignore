@@ -1,2 +1,4 @@
 migrations/
 tests/
+build/
+dist/

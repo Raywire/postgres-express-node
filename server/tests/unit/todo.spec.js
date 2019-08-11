@@ -3,27 +3,23 @@ const chai = require('chai');
 const { expect } = chai;
 const sinonChai = require('sinon-chai');
 const { mockReq, mockRes } = require('sinon-express-mock');
-const todosController = require('../controllers/todos');
-const { Todo } = require('../models');
-const { User } = require('../models');
+const todosController = require('../../controllers/todos');
+const { Todo } = require('../../models');
+const { User } = require('../../models');
+const { deleteTestUser } = require('../utils');
 
-process.env.NODE_ENV = 'test';
 chai.use(sinonChai);
 
-before(async () => {
-  user = await User.create({ username: 'testuser2@test.com', password: '1234567' });
-  todo = await Todo.create({ title: 'Watch Jessica Jones', UserId: user.id });
-});
-
-after(async () => {
-  await User.findByPk(user.id).then(((user) => {
-    if (user) {
-      user.destroy();
-    }
-  }));
-});
-
 describe('todo.controller', () => {
+  before(async () => {
+    user = await User.create({ username: 'testuser2@test.com', password: '1234567' });
+    todo = await Todo.create({ title: 'Watch Jessica Jones', UserId: user.id });
+  });
+
+  after(async () => {
+    await deleteTestUser('testuser2@test.com');
+  });
+
   describe('retrieve', () => {
     it('should return a single todo', (done) => {
       const request = {

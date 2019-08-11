@@ -8,21 +8,25 @@ const jwtOptions = {};
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 jwtOptions.secretOrKey = process.env.SECRET_KEY;
 
-// Strategey for web token
-module.exports = function (passport) {
-  const strategy = new JwtStrategy(jwtOptions, async (jwt_payload, next) => {
-    const user = await getUser(jwt_payload.username);
+const passportAuth = (passport) => {
+  const getUser = async (username) => User.findOne({
+    attributes: ['id', 'username', 'createdAt', 'updatedAt'],
+    where: {
+      username,
+    },
+  });
+
+  const strategy = new JwtStrategy(jwtOptions, async (jwtPayload, next) => {
+    const user = await getUser(jwtPayload.username);
     if (user) {
       next(null, user);
     } else {
       next(null, false);
     }
   });
-  const getUser = async (username) => await User.findOne({
-    attributes: ['id', 'username', 'createdAt', 'updatedAt'],
-    where: {
-      username,
-    },
-  });
   passport.use(strategy);
+};
+
+module.exports = {
+  passportAuth,
 };

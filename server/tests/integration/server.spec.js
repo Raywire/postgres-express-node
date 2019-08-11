@@ -2,9 +2,7 @@ const chai = require('chai');
 
 const { expect } = chai;
 const chaiHttp = require('chai-http');
-const app = require('../../app');
-
-process.env.NODE_ENV = 'test';
+const app = require('../../../app');
 
 chai.use(chaiHttp);
 
@@ -25,5 +23,13 @@ describe('Base Route', () => {
       .get('/');
 
     expect(res).to.have.status(200);
+  });
+
+  it('Should return 404 Not Found, on hitting an undefined route', async () => {
+    const res = await chai
+      .request(app)
+      .get('/undefined');
+
+    expect(res).to.have.status(404);
   });
 });

@@ -35,7 +35,7 @@ module.exports = {
   update(req, res) {
     const { todo, body } = req;
     return todo.update({
-      title: body.title || todo.title,
+      title: body.title,
     })
       .then(() => res.status(200).send(todo));
   },
