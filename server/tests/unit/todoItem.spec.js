@@ -23,7 +23,7 @@ describe('todoItem.controller', () => {
   });
 
   describe('createTodoItem', () => {
-    it('should return the created todo item', (done) => {
+    it('should return the created todo item', async () => {
       const request = {
         user: { id: user.id },
         body: {
@@ -35,14 +35,12 @@ describe('todoItem.controller', () => {
       };
       const req = mockReq(request);
       const res = mockRes();
-      todosItemsController.createTodoItem(req, res).then(() => {
-        expect(res.status).to.have.been.calledWith(201);
-        done();
-      });
+      await todosItemsController.createTodoItem(req, res);
+      expect(res.status).to.have.been.calledWith(201);
     });
   });
   describe('update', () => {
-    it('should return the updated todo item', (done) => {
+    it('should return the updated todo item', async () => {
       const request = {
         user: { id: user.id },
         todoItem,
@@ -57,12 +55,10 @@ describe('todoItem.controller', () => {
       };
       const req = mockReq(request);
       const res = mockRes();
-      todosItemsController.update(req, res).then(() => {
+      await todosItemsController.update(req, res);
         expect(res.status).to.have.been.calledWith(200);
-        done();
-      });
     });
-    it('should return 404', (done) => {
+    it('should return 404', async () => {
       const request = {
         user: { id: user.id },
         todoItem,
@@ -76,10 +72,8 @@ describe('todoItem.controller', () => {
       };
       const req = mockReq(request);
       const res = mockRes();
-      todosItemsController.update(req, res).then(() => {
-        expect(res.status).to.have.been.calledWith(404);
-        done();
-      });
+      await todosItemsController.update(req, res);
+      expect(res.status).to.have.been.calledWith(404);
     });
   });
 });

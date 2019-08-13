@@ -2,16 +2,17 @@ const { Todo } = require('../models');
 const { TodoItem } = require('../models');
 
 module.exports = {
-  createTodo(req, res) {
+  async createTodo(req, res) {
     const { body, user } = req;
-    return Todo.create({
+    const createdTodo = await Todo.create({
       title: body.title,
       UserId: user.id,
-    })
-      .then((todo) => res.status(201).send(todo));
+    });
+    return res.status(201).send(createdTodo);
   },
-  list(req, res) {
-    return Todo.findAll({
+
+  async list(req, res) {
+    const todos = await Todo.findAll({
       where: {
         UserId: req.user.id,
       },
@@ -26,22 +27,25 @@ module.exports = {
         ['createdAt', 'DESC'],
         [{ model: TodoItem, as: 'todoItems' }, 'createdAt', 'ASC'],
       ],
-    })
-      .then((todos) => res.status(200).send(todos));
+    });
+    return res.status(200).send(todos);
   },
+
   retrieve(req, res) {
     return res.status(200).send(req.todo);
   },
-  update(req, res) {
+
+  async update(req, res) {
     const { todo, body } = req;
-    return todo.update({
+    const updatedTodo = await todo.update({
       title: body.title,
-    })
-      .then(() => res.status(200).send(todo));
+    });
+    return res.status(200).send(updatedTodo);
   },
-  destroy(req, res) {
+
+  async destroy(req, res) {
     const { todo } = req;
-    return todo.destroy()
-      .then(() => res.sendStatus(204));
+    await todo.destroy();
+    return res.sendStatus(204);
   },
 };

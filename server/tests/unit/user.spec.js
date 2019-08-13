@@ -14,7 +14,7 @@ describe('user.controller', () => {
   });
 
   describe('signup', () => {
-    it('should return the created user', (done) => {
+    it('should return the created user', async () => {
       const request = {
         body: {
           username: 'testuser3@test.com',
@@ -23,12 +23,10 @@ describe('user.controller', () => {
       };
       const req = mockReq(request);
       const res = mockRes();
-      usersController.signup(req, res).then(() => {
-        expect(res.status).to.have.been.calledWith(201);
-        done();
-      });
+      await usersController.signup(req, res);
+      expect(res.status).to.have.been.calledWith(201);
     });
-    it('should return 400 error when a user already exists', (done) => {
+    it('should return 400 error when a user already exists', async () => {
       const request = {
         body: {
           username: 'testuser3@test.com',
@@ -37,14 +35,12 @@ describe('user.controller', () => {
       };
       const req = mockReq(request);
       const res = mockRes();
-      usersController.signup(req, res).then(() => {
-        expect(res.status).to.have.been.calledWith(400);
-        done();
-      });
+      await usersController.signup(req, res);
+      expect(res.status).to.have.been.calledWith(400);
     });
   });
   describe('login', () => {
-    it('should return authentication failed when a username is not found', (done) => {
+    it('should return authentication failed when a username is not found', async () => {
       const request = {
         body: {
           username: 'testusernotfound@test.com',
@@ -53,10 +49,8 @@ describe('user.controller', () => {
       };
       const req = mockReq(request);
       const res = mockRes();
-      usersController.login(req, res).then(() => {
-        expect(res.status).to.have.been.calledWith(401);
-        done();
-      });
+      await usersController.login(req, res);
+      expect(res.status).to.have.been.calledWith(401);
     });
   });
 });

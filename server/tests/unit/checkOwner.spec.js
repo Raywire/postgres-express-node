@@ -22,8 +22,9 @@ describe('utils', () => {
   after(async () => {
     await deleteTestUser('testuser4@test.com');
   });
+
   describe('checkOwner', () => {
-    it('should return call next if todo is found', (done) => {
+    it('should return call next if todo is found', async () => {
       const request = {
         user: {
           id: user.id,
@@ -37,12 +38,11 @@ describe('utils', () => {
       const req = mockReq(request);
       const res = mockRes();
       const next = sinon.spy();
-      checkOwner.findTodo(req, res, next).then(() => {
-        expect(next.called).to.be.true;
-        done();
-      });
+      await checkOwner.findTodo(req, res, next);
+      expect(next.called).to.be.true;
     });
-    it('should return 404 if todo is not found', (done) => {
+
+    it('should return 404 if todo is not found', async () => {
       const request = {
         user: {
           id: user.id,
@@ -56,12 +56,11 @@ describe('utils', () => {
       const req = mockReq(request);
       const res = mockRes();
       const next = sinon.spy();
-      checkOwner.findTodo(req, res, next).then(() => {
-        expect(res.status).to.have.been.calledWith(404);
-        done();
-      });
+      await checkOwner.findTodo(req, res, next);
+      expect(res.status).to.have.been.calledWith(404);
     });
-    it('should return 403 if user is not authorized to access a todo', (done) => {
+
+    it('should return 403 if user is not authorized to access a todo', async () => {
       const request = {
         user: {
           id: 100000,
@@ -75,10 +74,8 @@ describe('utils', () => {
       const req = mockReq(request);
       const res = mockRes();
       const next = sinon.spy();
-      checkOwner.findTodo(req, res, next).then(() => {
-        expect(res.status).to.have.been.calledWith(403);
-        done();
-      });
+      await checkOwner.findTodo(req, res, next);
+      expect(res.status).to.have.been.calledWith(403);
     });
   });
 });

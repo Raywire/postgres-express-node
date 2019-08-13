@@ -33,22 +33,22 @@ describe('todo.controller', () => {
       done();
     });
   });
+
   describe('list', () => {
-    it('should return all todos', (done) => {
+    it('should return all todos', async () => {
       const request = {
         user: { id: user.id },
         todo,
       };
       const req = mockReq(request);
       const res = mockRes();
-      todosController.list(req, res).then(() => {
-        expect(res.status).to.have.been.calledWith(200);
-        done();
-      });
+      await todosController.list(req, res);
+      expect(res.status).to.have.been.calledWith(200);
     });
   });
+
   describe('createTodo', () => {
-    it('should return the created todo', (done) => {
+    it('should return the created todo', async () => {
       const request = {
         user: { id: user.id },
         body: {
@@ -57,14 +57,13 @@ describe('todo.controller', () => {
       };
       const req = mockReq(request);
       const res = mockRes();
-      todosController.createTodo(req, res).then(() => {
-        expect(res.status).to.have.been.calledWith(201);
-        done();
-      });
+      await todosController.createTodo(req, res);
+      expect(res.status).to.have.been.calledWith(201);
     });
   });
+
   describe('update', () => {
-    it('should return the updated todo', (done) => {
+    it('should return the updated todo', async () => {
       const request = {
         user: { id: user.id },
         todo,
@@ -74,10 +73,8 @@ describe('todo.controller', () => {
       };
       const req = mockReq(request);
       const res = mockRes();
-      todosController.update(req, res).then(() => {
-        expect(res.status).to.have.been.calledWith(200);
-        done();
-      });
+      await todosController.update(req, res);
+      expect(res.status).to.have.been.calledWith(200);
     });
   });
 });
