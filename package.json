@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "start:dev": "nodemon ./bin/www",
-    "test": "NODE_ENV=test npm run reset:db && NODE_ENV=test nyc mocha server/tests/**/*.spec.js",
+    "test": "NODE_ENV=test npm run reset:db && NODE_ENV=test nyc mocha --timeout 5000 server/tests/**/*.spec.js",
     "migrate": "sequelize db:migrate",
     "reset:db": "sequelize db:migrate:undo:all && npm run migrate",
     "coverage": "nyc report --reporter=lcov | coveralls",

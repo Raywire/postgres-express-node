@@ -28,7 +28,7 @@ module.exports = {
         [{ model: TodoItem, as: 'todoItems' }, 'createdAt', 'ASC'],
       ],
     });
-    return res.status(200).send(todos);
+    return res.status(200).send({ data: todos });
   },
 
   retrieve(req, res) {

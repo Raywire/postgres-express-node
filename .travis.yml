@@ -8,9 +8,6 @@ install:
   - npm install
 services: 
   - postgresql
-env:
-  global:
-    - CC_TEST_REPORTER_ID=ffbc5f139d04a87984c17844fa675b1a791474706b9ec9c7818e1054efe5b0fa
 before_install:
   - psql -c 'create database todos_test;' -U postgres
 before_script:

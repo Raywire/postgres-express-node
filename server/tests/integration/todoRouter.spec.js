@@ -74,7 +74,27 @@ describe('TodoRouter', () => {
         .send({ title: 'I took Killgrave down' });
 
       expect(res).to.have.status(201);
+      expect(res.body).to.include.keys('id', 'title', 'UserId', 'updatedAt', 'createdAt');
     });
+
+    it('Should return 200 when a single todo is fetched', async () => {
+      const res = await chai
+        .request(app).get(`/api/todos/${res2.body.id}`)
+        .set('Authorization', `Bearer ${token}`)
+
+      expect(res).to.have.status(200);
+      expect(res.body).to.include.keys('id', 'title', 'UserId', 'updatedAt', 'createdAt');
+    });
+
+    it('Should return 200 when all todos are fetched', async () => {
+      const res = await chai
+        .request(app).get('/api/todos/')
+        .set('Authorization', `Bearer ${token}`)
+
+      expect(res).to.have.status(200);
+      expect(res.body.data).to.be.a('array');
+    });
+
     it('Should return 204 when a todo is deleted successfully', async () => {
       const resDelete = await chai
         .request(app)
@@ -89,13 +109,25 @@ describe('TodoRouter', () => {
 
       expect(res).to.have.status(204);
     });
-    it('Should return 200 when a todo is updated successfully', async () => {
+
+    it('Should return 200 when the title of a todo is updated successfully', async () => {
       const res = await chai
         .request(app).put(`/api/todos/${res2.body.id}`)
         .set('Authorization', `Bearer ${token}`)
         .send({ title: 'I took Killgrave down' });
 
       expect(res).to.have.status(200);
+      expect(res.body).to.include.keys('id', 'title', 'UserId', 'updatedAt', 'createdAt');
+    });
+
+    it('Should return 404 when a todo does not exist', async () => {
+      const res = await chai
+        .request(app)
+        .delete(`/api/todos/10000`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(res).to.have.status(404);
+      expect(res.body).to.include.keys('message');
     });
   });
 
@@ -114,7 +146,9 @@ describe('TodoRouter', () => {
         .send({ content: 'I beat the hell out of Luke Cage' });
 
       expect(res).to.have.status(201);
+      expect(res.body).to.include.keys('id', 'complete', 'content', 'todoId', 'updatedAt', 'createdAt');
     });
+
     it('Should return 204 when a todo item is deleted successfully', async () => {
       const res2 = await chai
         .request(app)
@@ -135,6 +169,7 @@ describe('TodoRouter', () => {
 
       expect(res).to.have.status(204);
     });
+
     it('Should return 404 when a todo item does not exist', async () => {
       const res = await chai
         .request(app)
@@ -142,7 +177,9 @@ describe('TodoRouter', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(res).to.have.status(404);
+      expect(res.body).to.include.keys('message');
     });
+
     it('Should return 200 when a todo item is updated successfully', async () => {
       const res3 = await chai
         .request(app)
@@ -154,9 +191,10 @@ describe('TodoRouter', () => {
         .request(app)
         .put(`/api/todos/${res2.body.id}/items/${res3.body.id}`)
         .set('Authorization', `Bearer ${token}`)
-        .send({ content: 'I beat Cage Twice' });
+        .send({ complete: true, content: 'I beat Cage Twice' });
 
       expect(res).to.have.status(200);
+      expect(res.body).to.include.keys('id', 'complete', 'content', 'todoId', 'updatedAt');
     });
   });
 });
