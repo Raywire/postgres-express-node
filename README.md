@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/Raywire/postgres-express-node.svg?branch=develop)](https://travis-ci.org/Raywire/postgres-express-node)
 [![Coverage Status](https://coveralls.io/repos/github/Raywire/postgres-express-node/badge.svg?branch=develop)](https://coveralls.io/github/Raywire/postgres-express-node?branch=develop)
 [![Maintainability](https://api.codeclimate.com/v1/badges/af62aca2e06bd8f4da6f/maintainability)](https://codeclimate.com/github/Raywire/postgres-express-node/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/af62aca2e06bd8f4da6f/test_coverage)](https://codeclimate.com/github/Raywire/postgres-express-node/test_coverage)
 
 # postgres-express-node
 Todo list backend API using express

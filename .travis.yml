@@ -8,10 +8,19 @@ install:
   - npm install
 services: 
   - postgresql
+env:
+  global:
+    - CC_TEST_REPORTER_ID=ffbc5f139d04a87984c17844fa675b1a791474706b9ec9c7818e1054efe5b0fa
 before_install:
   - psql -c 'create database todos_test;' -U postgres
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
   - npm test
+after_script:
+  - ./cc-test-reporter after-build -t lcov --exit-code $TRAVIS_TEST_RESULT
 after_success:
   - npm run coverage
 
