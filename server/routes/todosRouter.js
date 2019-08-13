@@ -3,7 +3,7 @@ const { celebrate } = require('celebrate');
 const todosController = require('../controllers').todos;
 const todoItemsController = require('../controllers').todoItems;
 const validator = require('../validators/validators');
-const checkOwner = require('../utils/checkOwner');
+const checkOwner = require('../middlewares/checkOwner');
 const asyncHandler = require('../middlewares/asyncHandler');
 
 function todosRoutes() {
