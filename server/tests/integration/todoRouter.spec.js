@@ -95,6 +95,33 @@ describe('TodoRouter', () => {
       expect(res.body.data).to.be.a('array');
     });
 
+    it('Should return 200 when all todos are fetched with pagination query params', async () => {
+      const res = await chai
+        .request(app).get('/api/todos/?limit=1&page=1')
+        .set('Authorization', `Bearer ${token}`)
+
+      expect(res).to.have.status(200);
+      expect(res.body.data).to.be.a('array');
+    });
+
+    it('Should return 200 when all todos are fetched with incorrect(negative) page query param', async () => {
+      const res = await chai
+        .request(app).get('/api/todos/?page=-1')
+        .set('Authorization', `Bearer ${token}`)
+
+      expect(res).to.have.status(200);
+      expect(res.body.data).to.be.a('array');
+    });
+
+    it('Should return 200 when all todos are fetched with incorrect(negative) limit query param', async () => {
+      const res = await chai
+        .request(app).get('/api/todos/?limit=-1')
+        .set('Authorization', `Bearer ${token}`)
+
+      expect(res).to.have.status(200);
+      expect(res.body.data).to.be.a('array');
+    });
+
     it('Should return 204 when a todo is deleted successfully', async () => {
       const resDelete = await chai
         .request(app)

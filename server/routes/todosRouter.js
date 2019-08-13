@@ -5,9 +5,11 @@ const todoItemsController = require('../controllers').todoItems;
 const validator = require('../validators/validators');
 const checkOwner = require('../middlewares/checkOwner');
 const asyncHandler = require('../middlewares/asyncHandler');
+const { paginate } = require('../middlewares/pagination');
 
 function todosRoutes() {
   const todosRouter = express.Router();
+  todosRouter.use('/', paginate);
   todosRouter.route('/todos')
     .post(celebrate({ body: validator.validateTodo }), asyncHandler(todosController.createTodo))
     .get(asyncHandler(todosController.list));

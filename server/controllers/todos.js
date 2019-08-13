@@ -12,10 +12,12 @@ module.exports = {
   },
 
   async list(req, res) {
-    const todos = await Todo.findAll({
-      where: {
-        UserId: req.user.id,
-      },
+    const { limit, page, offset } = req.query;
+
+    const todos = await Todo.findAndCountAll({
+      limit,
+      offset,
+      where: { UserId: req.user.id },
       include: [
         {
           model: TodoItem,
@@ -28,7 +30,14 @@ module.exports = {
         [{ model: TodoItem, as: 'todoItems' }, 'createdAt', 'ASC'],
       ],
     });
-    return res.status(200).send({ data: todos });
+
+    const meta = {
+      total: todos.count,
+      pageCount: Math.ceil(todos.count / limit),
+      perPage: limit,
+      page,
+    };
+    return res.status(200).send({ meta, data: todos.rows });
   },
 
   retrieve(req, res) {
