@@ -43,8 +43,8 @@ async function login(req, res) {
     });
   }
 
-  return user.comparePassword(req.body.password, (err, isMatch) => {
-    if (isMatch && !err) {
+  return user.comparePassword(req.body.password, (match) => {
+    if (match) {
       const token = jwt.sign(JSON.parse(JSON.stringify(
         { userId: user.id, username: user.username },
       )), secretKey, { expiresIn: 86400 * 30 });

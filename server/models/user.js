@@ -13,19 +13,18 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  User.beforeSave((user) => {
+  User.beforeSave(async (user) => {
     if (user.changed('password')) {
-      user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
+      user.password = await bcrypt.hash(user.password, 10);
     }
   });
 
-  function comparePassword(passw, cb) {
-    bcrypt.compare(passw, this.password, (err, isMatch) => {
-      if (err) {
-        return cb(err);
-      }
-      return cb(null, isMatch);
-    });
+  async function comparePassword(password, cb) {
+    const match = await bcrypt.compare(password, this.password);
+    if (match) {
+      return cb(match);
+    }
+    return cb(false);
   }
 
   User.prototype.comparePassword = comparePassword;
