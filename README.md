@@ -53,6 +53,12 @@ Start server in development mode
 npm run start:dev
 ```
 
+## Running the tests
+Run the unit and integration tests using the command
+```node
+npm test
+```
+
 ## Built With
 
 *   [Express](https://expressjs.com/) - Express
@@ -62,31 +68,39 @@ npm run start:dev
 
 ## API Endpoints
 
-versioning for the endpoints
-/api/
+### Versioning for the none auth endpoints
+*  `/api/`
+
+*  Use `http://127.0.0.1:8001` as the base URL for the endpoints
 
 ## API Documentation
 [Postman API Documentation](https://documenter.getpostman.com/view/6831940/SVYtNdfm)
 
-| Method  | Route |
-| ------------- | ------------- |
-| POST | http://127.0.0.1:8001/auth/signup |
-| POST | http://127.0.0.1:8001/auth/login  |
-| GET |  http://127.0.0.1:8001/api/todos  |
-| POST | http://127.0.0.1:8001/api/todos |
-| GET |  http://127.0.0.1:8001/api/todos/1 |
-| PUT |  http://127.0.0.1:8001/api/todos/1  |
-| DELETE | http://127.0.0.1:8001/api/todos/1  |
-| POST | http://127.0.0.1:8001/api/todos/1  |
-| PUT | http://127.0.0.1:8001/api/todos/1/items/2  |
-| DELETE | http://127.0.0.1:8001/api/todos/1/items/2 |
 
-### Hosted on Heroku
+| Method  | Description| Route |
+| ------------- | ------------- | ------------- |
+| POST | Sign up | `/auth/signup` |
+| POST | Log in | `/auth/login` |
+| PATCH | Update password | `/api/users/:userId` |
+| GET |  Get all todos | `/api/todos` |
+| POST | Create a todo | `/api/todos` |
+| GET |  Get a specific todo | `/api/todos/:todoId` |
+| PUT |  Update a specific todo | `/api/todos/:todoId` |
+| DELETE | Delete a specific todo |`/api/todos/:todoId` |
+| POST | Create a todo item | `/api/todos/:todoId/items` |
+| PUT | Update a todo item | `/api/todos/:todoId/items/:todoItemId` |
+| DELETE | Delete a todo item | `/api/todos/:todoId/items/:todoItemId` |
+
+## Hosted on Heroku
 [Heroku Link](https://todos-node-app.herokuapp.com/)
 
-### Notes
+## Notes
 
 All routes apart from `auth/login` and `auth/signup` require Authorization using a JSON Web Token
+
+Add an authorization header with the token
+
+`'Authorization': 'Bearer token'`
 
 ## Author
 
