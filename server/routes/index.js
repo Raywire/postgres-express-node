@@ -1,8 +1,10 @@
 const todosRouter = require('./todosRouter');
-const userRouter = require('./userRouter');
+const authRouter = require('./authRouter');
+const usersRouter = require('./usersRouter');
 
 
 module.exports = {
   todosRouter,
-  userRouter,
+  authRouter,
+  usersRouter,
 };

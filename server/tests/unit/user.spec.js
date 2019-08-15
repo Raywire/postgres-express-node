@@ -3,14 +3,20 @@ const chai = require('chai');
 const { expect } = chai;
 const sinonChai = require('sinon-chai');
 const { mockReq, mockRes } = require('sinon-express-mock');
+const { User } = require('../../models');
 const usersController = require('../../controllers/users');
 const { deleteTestUser } = require('../utils');
 
 chai.use(sinonChai);
 
 describe('user.controller', () => {
+  before(async () => {
+    user = await User.create({ username: 'testuserchange@test.com', password: '1234567' });
+  });
+
   after(async () => {
     await deleteTestUser('testuser3@test.com');
+    await deleteTestUser('testuserchange@test.com');
   });
 
   describe('signup', () => {
@@ -39,6 +45,7 @@ describe('user.controller', () => {
       expect(res.status).to.have.been.calledWith(400);
     });
   });
+
   describe('login', () => {
     it('should return authentication failed when a username is not found', async () => {
       const request = {
@@ -51,6 +58,57 @@ describe('user.controller', () => {
       const res = mockRes();
       await usersController.login(req, res);
       expect(res.status).to.have.been.calledWith(401);
+    });
+  });
+
+  describe('update password', () => {
+    it('should return a 404 when a user is not found', async () => {
+      const request = {
+        body: {
+          password: '12345678',
+        },
+        params: {
+          userId: 10000,
+        },
+      };
+      const req = mockReq(request);
+      const res = mockRes();
+      await usersController.updatePassword(req, res);
+      expect(res.status).to.have.been.calledWith(404);
+    });
+    it('should return a 403 forbidden when a user tries to update the password of another user', async () => {
+      const request = {
+        body: {
+          password: '12345678',
+        },
+        params: {
+          userId: user.id,
+        },
+        user: {
+          id: 44
+        }
+      };
+      const req = mockReq(request);
+      const res = mockRes();
+      await usersController.updatePassword(req, res);
+      expect(res.status).to.have.been.calledWith(403);
+    });
+    it('should return a 200 on successful update of the password of a user', async () => {
+      const request = {
+        body: {
+          password: '12345678',
+        },
+        params: {
+          userId: user.id,
+        },
+        user: {
+          id: user.id
+        }
+      };
+      const req = mockReq(request);
+      const res = mockRes();
+      await usersController.updatePassword(req, res);
+      expect(res.status).to.have.been.calledWith(200);
     });
   });
 });

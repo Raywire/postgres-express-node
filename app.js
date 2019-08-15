@@ -8,10 +8,13 @@ const joiErrors = require('./server/middlewares/joiErrors');
 
 // Require our routes and passport into the application
 const todosRouter = require('./server/routes').todosRouter();
-const userRouter = require('./server/routes').userRouter();
+const authRouter = require('./server/routes').authRouter();
+const usersRouter = require('./server/routes').usersRouter();
 const { passportAuth } = require('./server/config/passport');
 
 passportAuth(passport);
+
+const apiPrefix = '/api';
 
 // Set up the express app
 const app = express();
@@ -29,8 +32,10 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/api', passport.authenticate('jwt', { session: false }), todosRouter);
-app.use(userRouter);
+app.use(apiPrefix, passport.authenticate('jwt', { session: false }));
+app.use(apiPrefix, usersRouter);
+app.use(apiPrefix, todosRouter);
+app.use(authRouter);
 
 app.use(joiErrors);
 

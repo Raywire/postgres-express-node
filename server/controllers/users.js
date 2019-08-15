@@ -55,7 +55,35 @@ async function login(req, res) {
   });
 }
 
+const updatePassword = async (req, res) => {
+  const { body, params } = req;
+  const user = await User.findByPk(params.userId);
+
+  if (!user) {
+    return res.status(404).send({
+      success: false,
+      message: 'User not found',
+    });
+  }
+
+  if (user.id !== req.user.id) {
+    return res.status(403).send({
+      success: false,
+      message: 'Forbidden, you can only update your own password',
+    });
+  }
+
+  await user.update({
+    password: body.password,
+  });
+  return res.status(200).send({
+    success: true,
+    message: 'Password updated successfully',
+  });
+};
+
 module.exports = {
   signup,
   login,
+  updatePassword,
 };
