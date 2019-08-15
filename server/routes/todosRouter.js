@@ -5,6 +5,7 @@ const todoItemsController = require('../controllers').todoItems;
 const validator = require('../validators/validators');
 const checkOwner = require('../middlewares/checkOwner');
 const asyncHandler = require('../middlewares/asyncHandler');
+const { checkParams } = require('../middlewares/reqParamChecker');
 const { paginate } = require('../middlewares/pagination');
 
 function todosRoutes() {
@@ -13,7 +14,7 @@ function todosRoutes() {
   todosRouter.route('/todos')
     .post(celebrate({ body: validator.validateTodo }), asyncHandler(todosController.createTodo))
     .get(asyncHandler(todosController.list));
-  todosRouter.use('/todos/:todoId', asyncHandler(checkOwner.findTodo));
+  todosRouter.use('/todos/:todoId', checkParams, asyncHandler(checkOwner.findTodo));
   todosRouter.route('/todos/:todoId')
     .get(asyncHandler(todosController.retrieve))
     .put(celebrate({ body: validator.validateTodo }), asyncHandler(todosController.update))
@@ -22,6 +23,7 @@ function todosRoutes() {
     .post(celebrate({
       body: validator.validateTodoItem,
     }), asyncHandler(todoItemsController.createTodoItem));
+  todosRouter.use('/todos/:todoId/items/:todoItemId', checkParams);
   todosRouter.route('/todos/:todoId/items/:todoItemId')
     .put(celebrate({ body: validator.validateTodoItem }), asyncHandler(todoItemsController.update))
     .delete(asyncHandler(todoItemsController.destroy));
