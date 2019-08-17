@@ -1,9 +1,9 @@
-const chai = require('chai');
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import app from '../../app';
+import { deleteTestUser } from '../utils';
 
 const { expect } = chai;
-const chaiHttp = require('chai-http');
-const app = require('../../../app');
-const { deleteTestUser } = require('../utils');
 
 chai.use(chaiHttp);
 
@@ -30,6 +30,14 @@ describe('Login', () => {
       .request(app)
       .post('/auth/login')
       .send({ username1: 'lukecage@alias.com', password: 'breaker' });
+
+    expect(res).to.have.status(400);
+  });
+  it('should return 400 Bad Request when password is missing', async () => {
+    const res = await chai
+      .request(app)
+      .post('/auth/login')
+      .send({ username: 'lukecage@alias.com', password1: 'breaker' });
 
     expect(res).to.have.status(400);
   });

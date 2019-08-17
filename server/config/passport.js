@@ -1,5 +1,5 @@
-const passportJWT = require('passport-jwt');
-const { User } = require('../models');
+import passportJWT from 'passport-jwt';
+import db from '../models';
 
 const { ExtractJwt } = passportJWT;
 const JwtStrategy = passportJWT.Strategy;
@@ -9,7 +9,7 @@ jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 jwtOptions.secretOrKey = process.env.SECRET_KEY;
 
 const passportAuth = (passport) => {
-  const getUser = async (username) => User.findOne({
+  const getUser = async (username) => db.User.findOne({
     attributes: ['id', 'username', 'createdAt', 'updatedAt'],
     where: {
       username,
@@ -27,6 +27,4 @@ const passportAuth = (passport) => {
   passport.use(strategy);
 };
 
-module.exports = {
-  passportAuth,
-};
+export default passportAuth;

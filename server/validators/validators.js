@@ -1,4 +1,4 @@
-const { Joi } = require('celebrate');
+import { Joi } from 'celebrate';
 
 const validateTodo = Joi.object().keys({
   title: Joi.string().required(),
@@ -23,7 +23,7 @@ const validatePassword = Joi.object().keys({
   password: Joi.string().alphanum().min(7).required(),
 });
 
-module.exports = {
+export default {
   validateTodo,
   validateTodoItem,
   validateUser,

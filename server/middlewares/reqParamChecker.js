@@ -8,7 +8,7 @@ const responseTwo = {
   message: 'URL params must be greater than zero',
 };
 
-const checkParams = (req, res, next) => {
+const checkTodoParams = (req, res, next) => {
   const { todoId, todoItemId } = req.params;
 
   if (!Number.isInteger(Number(todoId))) {
@@ -25,7 +25,7 @@ const checkParams = (req, res, next) => {
   return next();
 };
 
-const checkUserRouteParams = (req, res, next) => {
+const checkUserParams = (req, res, next) => {
   const { userId } = req.params;
 
   if (!Number.isInteger(Number(userId))) {
@@ -38,7 +38,9 @@ const checkUserRouteParams = (req, res, next) => {
   return next();
 };
 
-module.exports = {
-  checkParams,
-  checkUserRouteParams,
+const paramChecker = {
+  checkTodoParams,
+  checkUserParams,
 };
+
+export default paramChecker;

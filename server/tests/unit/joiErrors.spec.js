@@ -1,9 +1,9 @@
-const chai = require('chai');
+import chai from 'chai';
+import sinonChai from 'sinon-chai';
+import { mockReq, mockRes } from 'sinon-express-mock';
+import joiErrors from '../../middlewares/joiErrors';
 
 const { expect } = chai;
-const sinonChai = require('sinon-chai');
-const { mockReq, mockRes } = require('sinon-express-mock');
-const joiErrors = require('../../middlewares/joiErrors');
 
 chai.use(sinonChai);
 
@@ -18,7 +18,7 @@ describe('middlewares', () => {
       joiErrors(err, req, res, () => {
         expect(req.joiError).to.be.false;
         done();
-      })
+      });
     });
   });
 });

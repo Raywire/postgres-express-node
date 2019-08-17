@@ -1,6 +1,6 @@
-const { expect } = require('chai');
-const { Joi } = require('celebrate');
-const validator = require('../../validators/validators');
+import { expect } from 'chai';
+import { Joi } from 'celebrate';
+import validator from '../../validators/validators';
 
 describe('validators', () => {
   describe('todosRouter', () => {

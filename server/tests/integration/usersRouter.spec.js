@@ -1,11 +1,14 @@
-const chai = require('chai');
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import app from '../../app';
+import { deleteTestUser } from '../utils';
 
 const { expect } = chai;
-const chaiHttp = require('chai-http');
-const app = require('../../../app');
-const { deleteTestUser } = require('../utils');
 
 chai.use(chaiHttp);
+
+let token;
+let userId;
 
 describe('A user', () => {
   before(async () => {
@@ -38,5 +41,4 @@ describe('A user', () => {
       expect(res).to.have.status(200);
     });
   });
-
 });
