@@ -1,17 +1,16 @@
-const express = require('express');
-const cors = require('cors');
-const logger = require('morgan');
-const bodyParser = require('body-parser');
-const passport = require('passport');
-require('dotenv').config();
-const joiErrors = require('./server/middlewares/joiErrors');
+import express from 'express';
+import cors from 'cors';
+import logger from 'morgan';
+import bodyParser from 'body-parser';
+import passport from 'passport';
+import dotenv from 'dotenv';
+import joiErrors from './middlewares/joiErrors';
 
 // Require our routes and passport into the application
-const todosRouter = require('./server/routes').todosRouter();
-const authRouter = require('./server/routes').authRouter();
-const usersRouter = require('./server/routes').usersRouter();
-const { passportAuth } = require('./server/config/passport');
+import routers from './routes';
+import passportAuth from './config/passport';
 
+dotenv.config();
 passportAuth(passport);
 
 const apiPrefix = '/api';
@@ -33,9 +32,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(apiPrefix, passport.authenticate('jwt', { session: false }));
-app.use(apiPrefix, usersRouter);
-app.use(apiPrefix, todosRouter);
-app.use(authRouter);
+app.use(apiPrefix, routers.usersRouter());
+app.use(apiPrefix, routers.todosRouter());
+app.use(routers.authRouter());
 
 app.use(joiErrors);
 

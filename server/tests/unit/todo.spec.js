@@ -1,19 +1,21 @@
-const chai = require('chai');
+import chai from 'chai';
+import sinonChai from 'sinon-chai';
+import { mockReq, mockRes } from 'sinon-express-mock';
+import todosController from '../../controllers/todos';
+import db from '../../models';
+import { deleteTestUser } from '../utils';
 
 const { expect } = chai;
-const sinonChai = require('sinon-chai');
-const { mockReq, mockRes } = require('sinon-express-mock');
-const todosController = require('../../controllers/todos');
-const { Todo } = require('../../models');
-const { User } = require('../../models');
-const { deleteTestUser } = require('../utils');
 
 chai.use(sinonChai);
 
+let user;
+let todo;
+
 describe('todo.controller', () => {
   before(async () => {
-    user = await User.create({ username: 'testuser2@test.com', password: '1234567' });
-    todo = await Todo.create({ title: 'Watch Jessica Jones', UserId: user.id });
+    user = await db.User.create({ username: 'testuser2@test.com', password: '1234567' });
+    todo = await db.Todo.create({ title: 'Watch Jessica Jones', UserId: user.id });
   });
 
   after(async () => {

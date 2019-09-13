@@ -1,10 +1,10 @@
-const jwt = require('jsonwebtoken');
-const { User } = require('../models');
+import jwt from 'jsonwebtoken';
+import db from '../models';
 
 const secretKey = process.env.SECRET_KEY;
 
-async function signup(req, res) {
-  const user = await User.findOne({
+const signup = async (req, res) => {
+  const user = await db.User.findOne({
     attributes: ['username'],
     where: {
       username: req.body.username,
@@ -17,7 +17,7 @@ async function signup(req, res) {
       message: 'Email address already exists',
     });
   }
-  const newUser = await User.create({
+  const newUser = await db.User.create({
     username: req.body.username,
     password: req.body.password,
   });
@@ -26,10 +26,10 @@ async function signup(req, res) {
     success: true,
     user: { id: newUser.id, username: newUser.username, createdAt: newUser.createdAt },
   });
-}
+};
 
-async function login(req, res) {
-  const user = await User.findOne({
+const login = async (req, res) => {
+  const user = await db.User.findOne({
     attributes: ['id', 'password', 'username'],
     where: {
       username: req.body.username,
@@ -53,11 +53,11 @@ async function login(req, res) {
       res.status(401).send({ success: false, message: 'Authentication failed. Wrong password' });
     }
   });
-}
+};
 
 const updatePassword = async (req, res) => {
   const { body, params } = req;
-  const user = await User.findByPk(params.userId);
+  const user = await db.User.findByPk(params.userId);
 
   if (!user) {
     return res.status(404).send({
@@ -82,7 +82,7 @@ const updatePassword = async (req, res) => {
   });
 };
 
-module.exports = {
+export default {
   signup,
   login,
   updatePassword,

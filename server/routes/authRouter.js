@@ -1,18 +1,18 @@
-const express = require('express');
-const { celebrate } = require('celebrate');
-const usersController = require('../controllers').users;
-const validator = require('../validators/validators');
-const asyncHandler = require('../middlewares/asyncHandler');
+import express from 'express';
+import { celebrate } from 'celebrate';
+import validator from '../validators/validators';
+import asyncHandler from '../middlewares/asyncHandler';
+import controller from '../controllers';
 
-function authRoutes() {
+const authRoutes = () => {
   const authRouter = express.Router();
 
   authRouter.route('/auth/signup')
-    .post(celebrate({ body: validator.validateUser }), asyncHandler(usersController.signup));
+    .post(celebrate({ body: validator.validateUser }), asyncHandler(controller.users.signup));
   authRouter.route('/auth/login')
-    .post(celebrate({ body: validator.validateLogin }), asyncHandler(usersController.login));
+    .post(celebrate({ body: validator.validateLogin }), asyncHandler(controller.users.login));
 
   return authRouter;
-}
+};
 
-module.exports = authRoutes;
+export default authRoutes;

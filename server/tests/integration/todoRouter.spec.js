@@ -1,11 +1,14 @@
-const chai = require('chai');
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import app from '../../app';
+import { deleteTestUser, tokenInvalid } from '../utils';
 
 const { expect } = chai;
-const chaiHttp = require('chai-http');
-const app = require('../../../app');
-const { deleteTestUser, tokenInvalid } = require('../utils');
 
 chai.use(chaiHttp);
+
+let token;
+let res2;
 
 describe('TodoRouter', () => {
   before(async () => {
@@ -80,7 +83,7 @@ describe('TodoRouter', () => {
     it('Should return 200 when a single todo is fetched', async () => {
       const res = await chai
         .request(app).get(`/api/todos/${res2.body.id}`)
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${token}`);
 
       expect(res).to.have.status(200);
       expect(res.body).to.include.keys('id', 'title', 'UserId', 'updatedAt', 'createdAt');
@@ -89,7 +92,7 @@ describe('TodoRouter', () => {
     it('Should return 200 when all todos are fetched', async () => {
       const res = await chai
         .request(app).get('/api/todos/')
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${token}`);
 
       expect(res).to.have.status(200);
       expect(res.body.data).to.be.a('array');
@@ -98,7 +101,7 @@ describe('TodoRouter', () => {
     it('Should return 200 when all todos are fetched with pagination query params', async () => {
       const res = await chai
         .request(app).get('/api/todos/?limit=1&page=1')
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${token}`);
 
       expect(res).to.have.status(200);
       expect(res.body.data).to.be.a('array');
@@ -107,7 +110,7 @@ describe('TodoRouter', () => {
     it('Should return 200 when all todos are fetched with incorrect(negative) page query param', async () => {
       const res = await chai
         .request(app).get('/api/todos/?page=-1')
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${token}`);
 
       expect(res).to.have.status(200);
       expect(res.body.data).to.be.a('array');
@@ -116,7 +119,7 @@ describe('TodoRouter', () => {
     it('Should return 200 when all todos are fetched with incorrect(negative) limit query param', async () => {
       const res = await chai
         .request(app).get('/api/todos/?limit=-1')
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${token}`);
 
       expect(res).to.have.status(200);
       expect(res.body.data).to.be.a('array');
@@ -150,7 +153,7 @@ describe('TodoRouter', () => {
     it('Should return 404 when a todo does not exist', async () => {
       const res = await chai
         .request(app)
-        .delete(`/api/todos/10000`)
+        .delete('/api/todos/10000')
         .set('Authorization', `Bearer ${token}`);
 
       expect(res).to.have.status(404);
@@ -160,7 +163,7 @@ describe('TodoRouter', () => {
 
   describe('Todo Items actions', () => {
     it('Should return 201 when a todo item is created successfully', async () => {
-      const res2 = await chai
+      const res3 = await chai
         .request(app)
         .post('/api/todos')
         .set('Authorization', `Bearer ${token}`)
@@ -168,7 +171,7 @@ describe('TodoRouter', () => {
 
       const res = await chai
         .request(app)
-        .post(`/api/todos/${res2.body.id}/items`)
+        .post(`/api/todos/${res3.body.id}/items`)
         .set('Authorization', `Bearer ${token}`)
         .send({ content: 'I beat the hell out of Luke Cage' });
 
@@ -177,7 +180,7 @@ describe('TodoRouter', () => {
     });
 
     it('Should return 204 when a todo item is deleted successfully', async () => {
-      const res2 = await chai
+      const resCreate = await chai
         .request(app)
         .post('/api/todos')
         .set('Authorization', `Bearer ${token}`)
@@ -185,13 +188,13 @@ describe('TodoRouter', () => {
 
       const res3 = await chai
         .request(app)
-        .post(`/api/todos/${res2.body.id}/items`)
+        .post(`/api/todos/${resCreate.body.id}/items`)
         .set('Authorization', `Bearer ${token}`)
         .send({ content: 'I beat the hell out of Luke Cage' });
 
       const res = await chai
         .request(app)
-        .delete(`/api/todos/${res2.body.id}/items/${res3.body.id}`)
+        .delete(`/api/todos/${resCreate.body.id}/items/${res3.body.id}`)
         .set('Authorization', `Bearer ${token}`);
 
       expect(res).to.have.status(204);

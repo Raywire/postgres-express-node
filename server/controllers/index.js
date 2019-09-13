@@ -1,9 +1,11 @@
-const todos = require('./todos');
-const todoItems = require('./todoitems');
-const users = require('./users');
+import todos from './todos';
+import todoItems from './todoitems';
+import users from './users';
 
-module.exports = {
+const controllers = {
   todos,
   todoItems,
   users,
 };
+
+export default controllers;

@@ -1,17 +1,19 @@
-const chai = require('chai');
+import chai from 'chai';
+import sinonChai from 'sinon-chai';
+import { mockReq, mockRes } from 'sinon-express-mock';
+import db from '../../models';
+import usersController from '../../controllers/users';
+import { deleteTestUser } from '../utils';
 
 const { expect } = chai;
-const sinonChai = require('sinon-chai');
-const { mockReq, mockRes } = require('sinon-express-mock');
-const { User } = require('../../models');
-const usersController = require('../../controllers/users');
-const { deleteTestUser } = require('../utils');
 
 chai.use(sinonChai);
 
+let user;
+
 describe('user.controller', () => {
   before(async () => {
-    user = await User.create({ username: 'testuserchange@test.com', password: '1234567' });
+    user = await db.User.create({ username: 'testuserchange@test.com', password: '1234567' });
   });
 
   after(async () => {
@@ -85,8 +87,8 @@ describe('user.controller', () => {
           userId: user.id,
         },
         user: {
-          id: 44
-        }
+          id: 44,
+        },
       };
       const req = mockReq(request);
       const res = mockRes();
@@ -102,8 +104,8 @@ describe('user.controller', () => {
           userId: user.id,
         },
         user: {
-          id: user.id
-        }
+          id: user.id,
+        },
       };
       const req = mockReq(request);
       const res = mockRes();

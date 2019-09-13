@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 
-module.exports = (sequelize, DataTypes) => {
+const userModel = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     username: {
       type: DataTypes.STRING,
@@ -34,3 +34,5 @@ module.exports = (sequelize, DataTypes) => {
   };
   return User;
 };
+
+export default userModel;

@@ -1,32 +1,31 @@
-const express = require('express');
-const { celebrate } = require('celebrate');
-const todosController = require('../controllers').todos;
-const todoItemsController = require('../controllers').todoItems;
-const validator = require('../validators/validators');
-const checkOwner = require('../middlewares/checkOwner');
-const asyncHandler = require('../middlewares/asyncHandler');
-const { checkParams } = require('../middlewares/reqParamChecker');
-const { paginate } = require('../middlewares/pagination');
+import express from 'express';
+import { celebrate } from 'celebrate';
+import validator from '../validators/validators';
+import checkOwner from '../middlewares/checkOwner';
+import asyncHandler from '../middlewares/asyncHandler';
+import paramChecker from '../middlewares/reqParamChecker';
+import paginate from '../middlewares/pagination';
+import controller from '../controllers';
 
-function todosRoutes() {
+const todosRoutes = () => {
   const todosRouter = express.Router();
   todosRouter.use('/', paginate);
   todosRouter.route('/todos')
-    .post(celebrate({ body: validator.validateTodo }), asyncHandler(todosController.createTodo))
-    .get(asyncHandler(todosController.list));
-  todosRouter.use('/todos/:todoId', checkParams, asyncHandler(checkOwner.findTodo));
+    .post(celebrate({ body: validator.validateTodo }), asyncHandler(controller.todos.createTodo))
+    .get(asyncHandler(controller.todos.list));
+  todosRouter.use('/todos/:todoId', paramChecker.checkTodoParams, asyncHandler(checkOwner));
   todosRouter.route('/todos/:todoId')
-    .get(asyncHandler(todosController.retrieve))
-    .put(celebrate({ body: validator.validateTodo }), asyncHandler(todosController.update))
-    .delete(asyncHandler(todosController.destroy));
+    .get(asyncHandler(controller.todos.retrieve))
+    .put(celebrate({ body: validator.validateTodo }), asyncHandler(controller.todos.update))
+    .delete(asyncHandler(controller.todos.destroy));
   todosRouter.route('/todos/:todoId/items')
     .post(celebrate({
       body: validator.validateTodoItem,
-    }), asyncHandler(todoItemsController.createTodoItem));
-  todosRouter.use('/todos/:todoId/items/:todoItemId', checkParams);
+    }), asyncHandler(controller.todoItems.createTodoItem));
+  todosRouter.use('/todos/:todoId/items/:todoItemId', paramChecker.checkTodoParams);
   todosRouter.route('/todos/:todoId/items/:todoItemId')
-    .put(celebrate({ body: validator.validateTodoItem }), asyncHandler(todoItemsController.update))
-    .delete(asyncHandler(todoItemsController.destroy));
+    .put(celebrate({ body: validator.validateTodoItem }), asyncHandler(controller.todoItems.update))
+    .delete(asyncHandler(controller.todoItems.destroy));
   todosRouter.route('*')
     .all((req, res) => {
       res.status(405).send({
@@ -35,6 +34,6 @@ function todosRoutes() {
     });
 
   return todosRouter;
-}
+};
 
-module.exports = todosRoutes;
+export default todosRoutes;

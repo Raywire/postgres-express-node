@@ -1,21 +1,23 @@
-const chai = require('chai');
+import chai from 'chai';
+import sinonChai from 'sinon-chai';
+import { mockReq, mockRes } from 'sinon-express-mock';
+import todosItemsController from '../../controllers/todoitems';
+import db from '../../models';
+import { deleteTestUser } from '../utils';
 
 const { expect } = chai;
-const sinonChai = require('sinon-chai');
-const { mockReq, mockRes } = require('sinon-express-mock');
-const todosItemsController = require('../../controllers/todoitems');
-const { Todo } = require('../../models');
-const { TodoItem } = require('../../models');
-const { User } = require('../../models');
-const { deleteTestUser } = require('../utils');
 
 chai.use(sinonChai);
 
+let user;
+let todo;
+let todoItem;
+
 describe('todoItem.controller', () => {
   before(async () => {
-    user = await User.create({ username: 'testuser@test.com', password: '1234567' });
-    todo = await Todo.create({ title: 'Watch Jessica Jones', UserId: user.id });
-    todoItem = await TodoItem.create({ content: 'Watch Season 1', todoId: todo.id });
+    user = await db.User.create({ username: 'testuser@test.com', password: '1234567' });
+    todo = await db.Todo.create({ title: 'Watch Jessica Jones', UserId: user.id });
+    todoItem = await db.TodoItem.create({ content: 'Watch Season 1', todoId: todo.id });
   });
 
   after(async () => {
@@ -56,7 +58,7 @@ describe('todoItem.controller', () => {
       const req = mockReq(request);
       const res = mockRes();
       await todosItemsController.update(req, res);
-        expect(res.status).to.have.been.calledWith(200);
+      expect(res.status).to.have.been.calledWith(200);
     });
     it('should return 404', async () => {
       const request = {

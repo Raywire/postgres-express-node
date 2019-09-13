@@ -1,4 +1,4 @@
-const { isCelebrate } = require('celebrate');
+import { isCelebrate } from 'celebrate';
 
 const joiErrors = (err, req, res, next) => {
   if (!isCelebrate(err)) {
@@ -13,4 +13,4 @@ const joiErrors = (err, req, res, next) => {
   });
 };
 
-module.exports = joiErrors;
+export default joiErrors;

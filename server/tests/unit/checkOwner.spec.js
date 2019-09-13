@@ -1,22 +1,26 @@
-const chai = require('chai');
+import chai from 'chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+import { mockReq, mockRes } from 'sinon-express-mock';
+import checkOwner from '../../middlewares/checkOwner';
+import db from '../../models';
+
+import { deleteTestUser } from '../utils';
+
 
 const { expect } = chai;
-const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
-const { mockReq, mockRes } = require('sinon-express-mock');
-const checkOwner = require('../../middlewares/checkOwner');
-const { Todo } = require('../../models');
-const { TodoItem } = require('../../models');
-const { deleteTestUser } = require('../utils');
-const { User } = require('../../models');
 
 chai.use(sinonChai);
 
+let user;
+let todo;
+let todoItem;
+
 describe('utils', () => {
   before(async () => {
-    user = await User.create({ username: 'testuser4@test.com', password: '1234567' });
-    todo = await Todo.create({ title: 'Watch Jessica Jones', UserId: user.id });
-    todoItem = await TodoItem.create({ content: 'Watch Season 1', todoId: todo.id });
+    user = await db.User.create({ username: 'testuser4@test.com', password: '1234567' });
+    todo = await db.Todo.create({ title: 'Watch Jessica Jones', UserId: user.id });
+    todoItem = await db.TodoItem.create({ content: 'Watch Season 1', todoId: todo.id });
   });
 
   after(async () => {
@@ -38,7 +42,7 @@ describe('utils', () => {
       const req = mockReq(request);
       const res = mockRes();
       const next = sinon.spy();
-      await checkOwner.findTodo(req, res, next);
+      await checkOwner(req, res, next);
       expect(next.called).to.be.true;
     });
 
@@ -56,7 +60,7 @@ describe('utils', () => {
       const req = mockReq(request);
       const res = mockRes();
       const next = sinon.spy();
-      await checkOwner.findTodo(req, res, next);
+      await checkOwner(req, res, next);
       expect(res.status).to.have.been.calledWith(404);
     });
 
@@ -74,7 +78,7 @@ describe('utils', () => {
       const req = mockReq(request);
       const res = mockRes();
       const next = sinon.spy();
-      await checkOwner.findTodo(req, res, next);
+      await checkOwner(req, res, next);
       expect(res.status).to.have.been.calledWith(403);
     });
   });
