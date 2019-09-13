@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/Raywire/postgres-express-node.svg?branch=develop)](https://travis-ci.org/Raywire/postgres-express-node)
+[![Build Status](https://ryanwire.visualstudio.com/postgres-express-node/_apis/build/status/Raywire.postgres-express-node?branchName=develop)](https://ryanwire.visualstudio.com/postgres-express-node/_build/latest?definitionId=2&branchName=develop)
 [![Coverage Status](https://coveralls.io/repos/github/Raywire/postgres-express-node/badge.svg?branch=develop)](https://coveralls.io/github/Raywire/postgres-express-node?branch=develop)
 [![Maintainability](https://api.codeclimate.com/v1/badges/af62aca2e06bd8f4da6f/maintainability)](https://codeclimate.com/github/Raywire/postgres-express-node/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/af62aca2e06bd8f4da6f/test_coverage)](https://codeclimate.com/github/Raywire/postgres-express-node/test_coverage)
@@ -93,6 +94,9 @@ npm test
 
 ## Hosted on Heroku
 [Heroku Link](https://todos-node-app.herokuapp.com/)
+
+## Hosted on Microsoft Azure
+[Azure Link](https://postgres-express-node-todos.azurewebsites.net)
 
 ## Notes
 
